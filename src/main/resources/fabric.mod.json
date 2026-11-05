@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "id": "armormaking",
+  "version": "${version}",
+  "name": "Armor Making Mod",
+  "description": "Menu-driven automation: trade, enchant-book buying and anvil work.",
+  "environment": "client",
+  "entrypoints": { "client": ["com.armormaking.ArmorMakingMod"] },
+  "depends": {
+    "fabricloader": ">=0.19.3",
+    "minecraft": ">=26.2",
+    "java": ">=25",
+    "fabric-api": "*"
+  }
+}
