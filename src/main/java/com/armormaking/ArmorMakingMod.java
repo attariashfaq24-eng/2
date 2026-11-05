@@ -8,7 +8,7 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -26,7 +26,7 @@ public class ArmorMakingMod implements ClientModInitializer {
         ClientTickEvents.END_CLIENT_TICK.register(mc -> {
             try {
                 if (mc.player == null || mc.level == null) return;
-                while (menuKey.consumeClick()) mc.setScreen(new ConfigScreen());
+                while (menuKey.consumeClick()) mc.setScreenAndShow(new ConfigScreen());
                 while (markKey.consumeClick()) mark(mc);
                 while (stopKey.consumeClick()) Automation.stop("Stopped.");
                 Automation.tick(mc);
@@ -40,7 +40,7 @@ public class ArmorMakingMod implements ClientModInitializer {
     private static void mark(Minecraft mc) {
         HitResult h = mc.hitResult;
         Config.Role role = Config.markRole;
-        if (h instanceof EntityHitResult eh && eh.getEntity().getType() == EntityType.VILLAGER) {
+        if (h instanceof EntityHitResult eh && eh.getEntity().getType() == EntityTypes.VILLAGER) {
             if (role == Config.Role.ANVIL) { Game.say("Current mark type is ANVIL. Change it in the menu (K) to a villager type."); return; }
             Config.addVillager(role, eh.getEntity().getUUID());
             Game.say("Villager marked as " + role.label + " (total " + Config.villagers(role).size() + ").");

@@ -13,7 +13,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.inventory.ContainerInput;
 import net.minecraft.world.inventory.MerchantMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -33,7 +33,7 @@ final class Game {
     static Minecraft mc() { return Minecraft.getInstance(); }
 
     static void say(String s) {
-        if (mc().player != null) mc().player.displayClientMessage(Component.literal("[ArmorMaking] " + s), false);
+        if (mc().player != null) mc().player.sendSystemMessage(Component.literal("[ArmorMaking] " + s));
     }
 
     /** Counts items in the 36 normal inventory slots. */
@@ -87,9 +87,9 @@ final class Game {
         mc().player.swing(InteractionHand.MAIN_HAND);
     }
 
-    static void click(int slot, int button, ClickType type) {
+    static void click(int slot, int button, ContainerInput type) {
         AbstractContainerMenu m = mc().player.containerMenu;
-        mc().gameMode.handleInventoryMouseClick(m.containerId, slot, button, type, mc().player);
+        mc().gameMode.handleContainerInput(m.containerId, slot, button, type, mc().player);
     }
 
     static void selectTrade(MerchantMenu m, int index) {
@@ -127,7 +127,7 @@ final class Game {
             ItemStack s = inv.getItem(i);
             if (s.isEmpty() || !p.test(s)) continue;
             if (i < 9) inv.setSelectedSlot(i);
-            else click(i, inv.getSelectedSlot(), ClickType.SWAP);
+            else click(i, inv.getSelectedSlot(), ContainerInput.SWAP);
             return true;
         }
         return false;

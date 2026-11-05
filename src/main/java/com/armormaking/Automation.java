@@ -12,7 +12,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.inventory.AnvilMenu;
-import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.inventory.ContainerInput;
 import net.minecraft.world.inventory.MerchantMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -253,7 +253,7 @@ public final class Automation {
                 case 3 -> {
                     if (!(p.containerMenu instanceof MerchantMenu m)) { vi++; phase = 0; return false; }
                     if (m.getSlot(2).hasItem()) {
-                        Game.click(2, 0, ClickType.PICKUP);
+                        Game.click(2, 0, ContainerInput.PICKUP);
                         phase = 4; timer = 0; pause(2);
                     } else if (++timer > 4) {
                         p.closeContainer(); vi++; phase = 0; // cannot afford / sold out
@@ -266,7 +266,7 @@ public final class Automation {
                     int s = Game.findPlaceSlot(m, c);
                     if (s < 0) throw new Abort("Inventory is full.");
                     if (++timer > 10) throw new Abort("Could not move the trade result into the inventory.");
-                    Game.click(s, 0, ClickType.PICKUP);
+                    Game.click(s, 0, ContainerInput.PICKUP);
                     pause(2);
                 }
                 default -> phase = 0;
@@ -378,10 +378,10 @@ public final class Automation {
                     if (sg < 0) throw new Abort("No " + g.label + " in the inventory.");
                     int sb = Game.findSlot(m, 3, s -> Game.isBook(s, n.key(), n.lvl()));
                     if (sb < 0) throw new Abort("Missing book: " + n.name() + " " + n.lvl());
-                    Game.click(sg, 0, ClickType.PICKUP);
-                    Game.click(0, 0, ClickType.PICKUP);
-                    Game.click(sb, 0, ClickType.PICKUP);
-                    Game.click(1, 0, ClickType.PICKUP);
+                    Game.click(sg, 0, ContainerInput.PICKUP);
+                    Game.click(0, 0, ContainerInput.PICKUP);
+                    Game.click(sb, 0, ContainerInput.PICKUP);
+                    Game.click(1, 0, ContainerInput.PICKUP);
                     phase = 3; timer = 0; pause(4);
                 }
                 case 3 -> {
@@ -394,7 +394,7 @@ public final class Automation {
                             queue.addFirst(new EnsureLevels(cost));
                             return false;
                         }
-                        Game.click(2, 0, ClickType.QUICK_MOVE);
+                        Game.click(2, 0, ContainerInput.QUICK_MOVE);
                         phase = 4; pause(4);
                     } else if (++timer > 15) {
                         throw new Abort("Anvil gave no result for " + g.label + " + " + n.name() + " " + n.lvl()
